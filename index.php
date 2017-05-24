@@ -1,110 +1,100 @@
-<?php if (isset($_GET['code'])){
-  $code = "" . $_GET['code'];
-  $other_bars = array(
-    //L_Quiet
-    "iVBORw0KGgoAAAANSUhEUgAAABsAAADxCAYAAAA6C8yxAAAABmJLR0QA/wD/AP+gvaeTAAAAvUlEQVR4nO3QOwrCUBAF0BtJGRsL97+TkMIF6B5cgOn9NAYHQbAwgeCZ6jLvcQ9M7q85l3wseSi5L/nw4f/Ucym7U5JssuDAYDAYbD5sX3IzN7b9pnOVZ4TBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMNjfYW2S3Q96umdXkoxJbm/v1yR5AJdDay0G/lBKAAAAAElFTkSuQmCC",
-    //Start
-    "iVBORw0KGgoAAAANSUhEUgAAAAoAAAD1CAYAAABp9mRxAAAABmJLR0QA/wD/AP+gvaeTAAAAYUlEQVRoge3KsQlCQRQAwUUs4GP/3diFXBMmFwnPRMXQzGQ2XKZqqjmO4z6v9t6396+uVad+DARBEARBEARBEARBEARBEARBEARBEARBEARBEAT/A8/VpWpmPnOt9W0eVU/B/hoeE+b8uQAAAABJRU5ErkJggg==",
-    //Middle
-    "iVBORw0KGgoAAAANSUhEUgAAAA8AAAD1CAYAAACP3681AAAABmJLR0QA/wD/AP+gvaeTAAAAh0lEQVRoge3LsQ3CMABE0QuiSZGGGbJXtmIUD0FHywyWrJRUpiGGGtr3q9NJL/1da21P0pP0eZ4fx19KuR//tm23/ul6yh/BMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDv3ZOckmSaZrGua7r2MuyjF1r/bbPFzZiL1Sn6Z00AAAAAElFTkSuQmCC",
-    //End
-    "iVBORw0KGgoAAAANSUhEUgAAAAoAAAD1CAYAAABp9mRxAAAABmJLR0QA/wD/AP+gvaeTAAAAYUlEQVRoge3KsQlCQRQAwUUs4GP/3diFXBMmFwnPRMXQzGQ2XKZqqjmO4z6v9t6396+uVad+DARBEARBEARBEARBEARBEARBEARBEARBEARBEAT/A8/VpWpmPnOt9W0eVU/B/hoeE+b8uQAAAABJRU5ErkJggg==",
-    //R_Quiet
-    "iVBORw0KGgoAAAANSUhEUgAAABsAAADxCAYAAAA6C8yxAAAABmJLR0QA/wD/AP+gvaeTAAAAvUlEQVR4nO3QOwrCUBAF0BtJGRsL97+TkMIF6B5cgOn9NAYHQbAwgeCZ6jLvcQ9M7q85l3wseSi5L/nw4f/Ucym7U5JssuDAYDAYbD5sX3IzN7b9pnOVZ4TBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMNjfYW2S3Q96umdXkoxJbm/v1yR5AJdDay0G/lBKAAAAAElFTkSuQmCC"
-  );
-  $l_bars = array(
-    //L_0
-    "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH2wcHAxotbG66EgAAALNJREFUeJztzTFKxAAQheEfEXfvkMOl9DA5x+IxxNbO1jZVmoDNohbuNgnuAbb8Hgw8huGbLv/5uumfe1nX9aO6bPO+92ma3vabcRxf9/1Ddw4QCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBwLvksXre+t/Ng9/qqWqe55/qsO2/q2PVsizn6lQ1DMO5eqm6ApGPRWO10JLPAAAAAElFTkSuQmCC",
-    //L_1
-    "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAArklEQVR4nO3NMUoEURBF0YvY6h56cT+clYnLENPOTN2FHQyOgWPSH13AhOdBwaMoTnX9y+cs27Z9VNdj3mcfY2z/7t9mGWO8zpu7bhwgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgTfJfXU6+s98sCzLd/Vw7C/VY9W+71/V07E/V89V67qeq5eqX1nHQfT6moEiAAAAAElFTkSuQmCC",
-    //L_2
-    "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAsElEQVR4nO3NIU7FYBSE0S+EAraqqutjA90SYRkEW4dlF5gXQFBM/8ACnjyjJjeTczv+8jHKvu/v1VEd8zy//dvso2zb9jo21cvoN105QCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKvktvq8ew/48E0Td/VXdW6rl/V/bn5rB6qlmW5VE/n/VI9V/0CSPY+vlapEhIAAAAASUVORK5CYII=",
-    //L_3
-    "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAsUlEQVR4nO3NMUrEQACG0S+yqHfI4VJ6mJxDPIbYbmfrDVKFbRa1cG0SyAG2fD8MfAzMm27b1nW9VLftfB3689Dnved5/tjfTtP0vt8/dOcBgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCLzLTtVL1TAMf4cPfqvHrX+qp62/q+eqZVmu1WvVOI7X6q3qH36sMNIUi42HAAAAAElFTkSuQmCC",
-    //L_4
-    "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAsklEQVR4nO3NsU3EABBE0W90AjpwJa6JBtwSogxEehkpTViXnABLmMQWFHDhm2i0Gr1t27Msy6Xaqm2apo/tL+//+vko8zy/Hfvq9eh33ThAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAm+SU/VUNQzDz/FgXdfv6n7ffFUPe/+sHqvGcbxWz/v9Wr1U/QKqqkIn6ZKb/QAAAABJRU5ErkJggg==",
-    //L_5
-    "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAsElEQVR4nO3NMUrEABCF4T+yqG3qkLOl9GTiMcTWztZLhG0WtTA2Ce4BtvweDDyG4Zu2Peu6nqttn8+jj+P4sf3n/aq/HWVZltfj/q4bBwgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUDgTXKqnqqGYfi9evBT3VfN8/xdPez7r+px75fquWqapkv1UvUHVB4+7nXBQWAAAAAASUVORK5CYII=",
-    //L_6
-    "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAArUlEQVR4nO3NMUrEUBhG0RsZ1A1lTa5MXIbY2tnapk+YRtSAsUkgC5jyfNXl53Fe275lWa7VVm3jOH4e93meP4579X7qt1O/Hn3XjQcEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAg8Ca7VE9VwzD8HR+s6/pb3VdN0/RTPezvv6vHvb+q51O/VP0DHUc0CzLBhR8AAAAASUVORK5CYII=",
-    //L_7
-    "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH2wcHAjIJDPKaXgAAALBJREFUeJztzbFNwwAURdFrFAEbeDyXLOCVEGMg2nS0LGHFRQQUhMaWPEDK86QvveLp/G5blmW5VLftvg79c+/TNJ33/TzPH4fN+94funOAQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBN4lp+qlahiGv8OD3+px6z/VU9W6rt/Vc9U4jtfqddtcq7eqf3lwMJw3mUT2AAAAAElFTkSuQmCC",
-    //L_8
-    "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH2wcHAxcTGKHZ9AAAAK9JREFUeJztzTFKxAAURdEbGdQqkAVkfW4rjbgMsbWzdRNhmmG0cGwSyAKmPA8+vOJxfrct67qeq9t233ufpulr3yzL8nnYfBz6+94funOAQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBN4lp+qlahiGv8OD3+qxap7nn+qpahzHa/W8bS7V66G/Vf0DkdstnM7Rw/sAAAAASUVORK5CYII=",
-    //L_9
-    "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH2wcHAxkdYZrZfQAAALJJREFUeJztzbFNwwAURdErhIANPJ5LFvBKKGOgtHS0tO4t4SKCFJgmVjJAyvOqp6ev89uu+b7pX3tZluWz2qptHMePfZ+m6bjv1fveH7pzgEAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCATeJY/V66X/3Tw4V09V8zz/Vs9V67r+VC9VwzCcqrfL/ak6VP0DjFNFLaLwx5cAAAAASUVORK5CYII=",
-);
-$r_bars = array(
-  //R_0
-  "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH2wcHAxoXqmJjoAAAALNJREFUeJztzbFNwwAQheFfCAGtK1eeLwt4IDcRYyBaOlp6D0ATBYqExhYZIOX3pJOeTqfvqq7bfN/0r70Pw/B5/c/HXuZ5ft9vlmV52/cP3TlAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAu+Sx+qw9cvNg9/qqWqapp/qedufq5eqcRxP1bFqXddT9Vr1B4IgN+nUrYIBAAAAAElFTkSuQmCC",
-  //R_1
-  "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH2wcHAxkdYZrZfQAAALBJREFUeJztzTFKBFEQRdGLiBr1bnpNbusn4jLE1GxS816AyaA2OCb90QVMeB4UPIriVNXlmI/Z13V9v/zlNMsY4+3f/evsY4yXeXPTlQMEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAg8Cq5rR6P/jMf7Pv+Xd0d+6/qvmpZls/q4difq6eqbdvO1XPVLwH3O1iVEfBXAAAAAElFTkSuQmCC",
-  //R_2
-  "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH2wcHAxkdYZrZfQAAALJJREFUeJztzTFKxAAQheEfEfVCOZOHyTkWjyG2drbbpkoT2GZRA8YmQQ+w5fdg4DEM31Rt+1yOPgzDeduzLMvHv5v3o4/j+Lb95fUod904QCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAJvkvvqee8/x4N1Xb+rh6ppmr6qx/3ms3qqmuf5Wp32/bV6qfoFWsg+jjMCy7YAAAAASUVORK5CYII=",
-  //R_3
-  "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH2wcHAxkdYZrZfQAAALBJREFUeJztzSFOxFAYRtEbQgZkXZfIBrqgGsIyCBaHxXcBYyaA4GGmoQsYeT5185L/vKpRjWmazuN/n4f+OPT7HsuyvO2367q+7u933XhAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAm+y++qpaozxe/jgpzpd+7t6uPZX9Vg1z/Oleq7atu1SvVT9Ad0DTHqkGHR6AAAAAElFTkSuQmCC",
-  //R_4
-  "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH2wcHAxk6xJBsFgAAAK9JREFUeJztzbFNw2AUhdFPEQ6U3pJhPEfEGIjWHS0buKSJIAU/jS0YIOW51dXV03lVoxrzPH+OPeu6fhx79f6vr0dfluVt/OX1KKfuHCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBd8lD9Vw1xvg5HkzTdKvO+8139bj3r+qpatu2a3XZ92v1UvULQRQ7JcUkAzwAAAAASUVORK5CYII=",
-  //R_5
-  "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAr0lEQVR4nO3NMUoDYRSF0Q8RtZxduq1pJMsQWztb22HaAZtgUuS3yWAWkPLc6vK4nFc1qjFN08/4z/detm372jfV503/2Ps8z+/7/qE7BwgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUDgXfJYvVaNMS43D87VU9WyLKfq+Xr/rV6u/Vi9Va3reqwOVX9PoD5eXsysyQAAAABJRU5ErkJggg==",
-  //R_6
-  "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAB3RJTUUH2wcHAxk6xJBsFgAAAKtJREFUeJztzbFNxEAURdErhIHQLsD1URmiDETqjJQuSNAuAUNiCxew4XnR1ejrTNWoxjzPX2Pftm2fx/uyLB/jf9up30/9dsRdNx4QCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBwJvsvnquGmP8Hh9M0/RTPVSt63qtHvf7S/W093f1curXqj8WhklBDlbYDwAAAABJRU5ErkJggg==",
-  //R_7
-  "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAr0lEQVR4nO3NIU7EYACE0S+ELKimt+QwvUQN4RgEi8Nyg8o1G0DwY7ahB1j5Ro2YvKka1Zjn+Tz+83noH3tZ1/V93y/L8nbYvO7lrhsHCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQOBNcl89VY0xfg8HP9Xp2r+rh6ppmr6qx6pt2y7V83VzqV6q/gAqTkywn2+SsgAAAABJRU5ErkJggg==",
-  //R_8
-  "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAq0lEQVR4nO3NIU7EYACE0S+EsMjesJKTbfYYBIvDYuubULEBBD+Ghh5g5Rs1YvKmalRjmqaP8Z/3vazr+rZv5nl+PWxeDv15L3fdOEAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCb5L76qlqjPFzOPiuHqqWZfmqTlXbtn1Wj3+ba3U+9EvVL1njT7BSwSznAAAAAElFTkSuQmCC",
-  //R_9
-  "iVBORw0KGgoAAAANSUhEUgAAABQAAADmCAYAAADV06UfAAAABmJLR0QA/wD/AP+gvaeTAAAAs0lEQVR4nO3NMUrEABCF4R+R1SqQA+R8HiaXSCMeQ2ztbL1Bym0WtTA2Ce4BtvweDDyG4ZuqbZ/zVf88+jiOH9ueZVnej/08z2/bf16PcteNAwQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCAQCAQCgUAgEAgEAoFAIBAIBAKBQCDwJrmvnvb+e/XgpzpVTdP0XT1UDcPwVT1Wret6qZ73+0v1UvUHz1w4H4eBxboAAAAASUVORK5CYII=",
- );
-  if (strlen($code) == 12){
-    echo "<style>td{border-style: none;border-width: thin;}</style>";
-    echo "<table cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse; border-style:solid; border-none;\">";
-    $hexEncoderBegin="<td><img src=\"data:image/png;base64,";
-    $hexEncoderEnd= "\"></td>";
-    echo "<tr style=\"border-collapse:collapse; border-style:solid;\">";
-    echo $hexEncoderBegin . $other_bars[0] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $other_bars[1] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $l_bars[$code[0]] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $l_bars[$code[1]] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $l_bars[$code[2]] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $l_bars[$code[3]] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $l_bars[$code[4]] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $l_bars[$code[5]] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $other_bars[2] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $r_bars[$code[6]] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $r_bars[$code[7]] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $r_bars[$code[8]] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $r_bars[$code[9]] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $r_bars[$code[10]] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $r_bars[$code[11]] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $other_bars[3] . $hexEncoderEnd;
-    echo $hexEncoderBegin . $other_bars[4] . $hexEncoderEnd;
-    echo "</tr>";
-   echo "<tr style=\"border-collapse:collapse; border-style:none;\">";
-   echo "<td></td>";
-   echo "<td>$code[0]</td>";
-   echo "<td></td>";
-   echo "<td>$code[1]</td>";
-   echo "<td>$code[2]</td>";
-   echo "<td>$code[3]</td>";
-   echo "<td>$code[4]</td>";
-   echo "<td>$code[5]</td>";
-   echo "<td></td>";
-   echo "<td>$code[6]</td>";
-   echo "<td>$code[7]</td>";
-   echo "<td>$code[8]</td>";
-   echo "<td>$code[9]</td>";
-   echo "<td>$code[10]</td>";
-   echo "<td></td>";
-   echo "<td>$code[11]</td>";
-   echo "<td></td>";
-   echo "</tr>";
-    echo "</table>";
+<!--<table>-->
+<!--<tr>-->
 
-  }else{
-    echo "Invalid Parameter Value";
-  }
+<?php
+if (isset($_GET['type'])) {
+	if ($_GET['type'] == "128") {
+		if (isset($_GET['code'])) {
+			$upc128_values = array("SP"=>0,"!"=>1,'"'=>2,"pound"=>3,"$"=>4,"%"=>5,"&"=>6,"'"=>7,"("=>8,")"=>9,"*"=>10,"+"=>11,","=>12,"-"=>13,"."=>14,"/"=>15,"0"=>16,"1"=>17,"2"=>18,"3"=>19,"4"=>20,"5"=>21,"6"=>22,"7"=>23,"8"=>24,"9"=>25,":"=>26,";"=>27,"<"=>28,"="=>29,">"=>30,"?"=>31,"@"=>32,"A"=>33,"B"=>34,"C"=>35,"D"=>36,"E"=>37,"F"=>38,"G"=>39,"H"=>40,"I"=>41,"J"=>42,"K"=>43,"L"=>44,"M"=>45,"N"=>46,"O"=>47,"P"=>48,"Q"=>49,"R"=>50,"S"=>51,"T"=>52,"U"=>53,"V"=>54,"W"=>55,"X"=>56,"Y"=>57,"Z"=>58,"["=>59,"\\"=>60,"]"=>61," "=>62,"_"=>63,"`"=>64,"a"=>65,"b"=>66,"c"=>67,"d"=>68,"e"=>69,"f"=>70,"g"=>71,"h"=>72,"i"=>73,"j"=>74,"k"=>75,"l"=>76,"m"=>77,"n"=>78,"o"=>79,"p"=>80,"q"=>81,"r"=>82,"s"=>83,"t"=>84,"u"=>85,"v"=>86,"w"=>87,"x"=>88,"y"=>89,"z"=>90,"{"=>91,"|"=>92,"}"=>93,"~"=>94,"DEL"=>95,"FNC3"=>96,"FNC2"=>97,"SHIFT"=>98,"CODE_C"=>99,"FNC4"=>100,"CODE_A"=>101,"FNC1"=>102,"START_A"=>103,"START_B"=>104,"START"=>105, "STOP"=>106);
+			$upc128_lines = array("11011001100","11001101100","11001100110","10010011000","10010001100","10001001100","10011001000","10011000100","10001100100","11001001000","11001000100","11000100100","10110011100","10011011100","10011001110","10111001100","10011101100","10011100110","11001110010","11001011100","11001001110","11011100100","11001110100","11101101110","11101001100","11100101100","11100100110","11101100100","11100110100","11100110010","11011011000","11011000110","11000110110","10100011000","10001011000","10001000110","10110001000","10001101000","10001100010","11010001000","11000101000","11000100010","10110111000","10110001110","10001101110","10111011000","10111000110","10001110110","11101110110","11010001110","11000101110","11011101000","11011100010","11011101110","11101011000","11101000110","11100010110","11101101000","11101100010","11100011010","11101111010","11001000010","11110001010","10100110000","10100001100","10010110000","10010000110","10000101100","10000100110","10110010000","10110000100","10011010000","10011000010","10000110100","10000110010","11000010010","11001010000","11110111010","11000010100","10001111010","10100111100","10010111100","10010011110","10111100100","10011110100","10011110010","11110100100","11110010100","11110010010","11011011110","11011110110","11110110110","10101111000","10100011110","10001011110","10111101000","10111100010","11110101000","11110100010","10111011110","10111101110","11101011110","11110101110","11010000100","11010010000","11010011100","1100011101011");
+			$code = $_GET['code'];
+			$codelength = strlen($code);
+			$checksum = 0;
+			$codeString = $upc128_lines[$upc128_values['START_A']];
+			for ($i=0; $i < $codelength; $i++) {
+				$codeString = $codeString . $upc128_lines[$upc128_values[$code[$i]]];
+				$checksum = $checksum + ($upc128_values[$code[$i]] * ($i + 1));
+			}
+			$checksum = $checksum % 103;
+			$codeString = $codeString . $upc128_lines[$checksum] . $upc128_lines[$upc128_values['STOP']];
+			$width = (strlen($codeString)) + 22;
+			$height = 75;
+			$image = imagecreate($width, $height);
+			imageAlphaBlending($image, true);
+			imageSaveAlpha($image, true);
+			$location = 12;
+			$color_white = imagecolorallocate ( $image ,255,255,255);
+			$color_black = imagecolorallocate ( $image ,0,0,0);
+			for ($i=0; $i < strlen($codeString); $i++) {
+				if ($codeString[$i] == "1") {
+					for ($y=0; $y < $height; $y++) {
+						imagesetpixel ($image, $location , $y , $color_black);
+					}
+					$location = $location + 1;
+				}else {
+					$location = $location + 1;
+				}
 
-}else{
-  echo "No Parameter Given";
-} ?>
+			}
+			ob_start();
+			imagepng($image);
+			$contents =  ob_get_contents();
+			ob_end_clean();
+			echo "<img id = '$code' style='width:100%;margin-left:auto; margin-right:auto;' src='data:image/png;base64," . base64_encode($contents) . "'>";
+		}
+	}
+
+	if ($_GET['type'] == "upc_a") {
+		if (isset($_GET['code'])) {
+			if (strlen($_GET['code']) <= 12) {
+				$upcA_values = array("START"=>0,"L_0"=>1,"L_1"=>2,"L_2"=>3,"L_3"=>4,"L_4"=>5,"L_5"=>6,"L_6"=>7,"L_7"=>8,"L_8"=>9,"L_9"=>10,"MID"=>11,"R_0"=>12,"R_1"=>13,"R_2"=>14,"R_3"=>15,"R_4"=>16,"R_5"=>17,"R_6"=>18,"R_7"=>19,"R_8"=>20,"R_9"=>21,"END"=>22);
+				$upcA_lines = array("101","0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011","01010","1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100","101");
+				$code = $_GET['code'];
+				$codelength = strlen($code);
+				$checksum = 0;
+				$codeString = $upcA_lines[$upcA_values['START']];
+				for ($i=0; $i < $codelength; $i++) {
+					if ($i < 6) {
+						$codeString = $codeString . $upcA_lines[$upcA_values["L_" . $code[$i]]];
+					}
+					if ($i == 6){
+						$codeString = $codeString . $upcA_lines[$upcA_values['MID']];
+						$codeString = $codeString . $upcA_lines[$upcA_values["R_" . $code[$i]]];
+					}
+					if ($i >6) {
+						$codeString = $codeString . $upcA_lines[$upcA_values["R_" . $code[$i]]];
+					}
+				}
+
+				$codeString = $codeString . $upcA_lines[$upcA_values['END']];
+				$width = (strlen($codeString)) + 22;
+				$height = 75;
+				$image = imagecreate($width, $height);
+				imageAlphaBlending($image, true);
+				imageSaveAlpha($image, true);
+				$location = 12;
+				$color_white = imagecolorallocate ( $image ,255,255,255);
+				$color_black = imagecolorallocate ( $image ,0,0,0);
+				for ($i=0; $i < strlen($codeString); $i++) {
+					if ($codeString[$i] == "1") {
+						for ($y=0; $y < $height; $y++) {
+							imagesetpixel ($image, $location , $y , $color_black);
+						}
+						$location = $location + 1;
+					}else {
+						$location = $location + 1;
+					}
+
+				}
+				ob_start();
+				imagepng($image);
+				$contents =  ob_get_contents();
+				ob_end_clean();
+				echo "<img id = '$code' style='width:100%;margin-left:auto; margin-right:auto;' src='data:image/png;base64," . base64_encode($contents) . "'>";
+
+			}
+		}
+	}
+}
+
+?>
