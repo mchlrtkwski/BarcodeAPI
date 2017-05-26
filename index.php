@@ -46,7 +46,7 @@ if (isset($_GET['type'])) {
 
 	if ($_GET['type'] == "upc_a") {
 		if (isset($_GET['code'])) {
-			if (strlen($_GET['code']) <= 12) {
+			if (strlen($_GET['code']) == 12) {
 				$upcA_values = array("START"=>0,"L_0"=>1,"L_1"=>2,"L_2"=>3,"L_3"=>4,"L_4"=>5,"L_5"=>6,"L_6"=>7,"L_7"=>8,"L_8"=>9,"L_9"=>10,"MID"=>11,"R_0"=>12,"R_1"=>13,"R_2"=>14,"R_3"=>15,"R_4"=>16,"R_5"=>17,"R_6"=>18,"R_7"=>19,"R_8"=>20,"R_9"=>21,"END"=>22);
 				$upcA_lines = array("101","0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011","01010","1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100","101");
 				$code = $_GET['code'];
@@ -67,6 +67,58 @@ if (isset($_GET['type'])) {
 				}
 
 				$codeString = $codeString . $upcA_lines[$upcA_values['END']];
+				$width = (strlen($codeString)) + 22;
+				$height = 75;
+				$image = imagecreate($width, $height);
+				imageAlphaBlending($image, true);
+				imageSaveAlpha($image, true);
+				$location = 12;
+				$color_white = imagecolorallocate ( $image ,255,255,255);
+				$color_black = imagecolorallocate ( $image ,0,0,0);
+				for ($i=0; $i < strlen($codeString); $i++) {
+					if ($codeString[$i] == "1") {
+						for ($y=0; $y < $height; $y++) {
+							imagesetpixel ($image, $location , $y , $color_black);
+						}
+						$location = $location + 1;
+					}else {
+						$location = $location + 1;
+					}
+
+				}
+				ob_start();
+				imagepng($image);
+				$contents =  ob_get_contents();
+				ob_end_clean();
+				echo "<img id = '$code' style='width:100%;margin-left:auto; margin-right:auto;' src='data:image/png;base64," . base64_encode($contents) . "'>";
+
+			}
+		}
+	}
+	if ($_GET['type'] == "upc_e") {
+		if (isset($_GET['code'])) {
+			if (strlen($_GET['code']) == 8) {
+				$upcE_values = array("START"=>0,"O_0"=>1,"O_1"=>2,"O_2"=>3,"O_3"=>4,"O_4"=>5,"O_5"=>6,"O_6"=>7,"O_7"=>8,"O_8"=>9,"O_9"=>10,"E_0"=>11,"E_1"=>12,"E_2"=>13,"E_3"=>14,"E_4"=>15,"E_5"=>16,"E_6"=>17,"E_7"=>18,"E_8"=>19,"E_9"=>20,"END"=>21);
+				$upcE_lines = array("101","0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011","0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111","010101");
+				$paritySystem = array("EEEOOO","EEOEOO","EEOOEO","EEOOOE","EOEEOO","EOOEEO","EOOOEE","EOEOEO","EOEOOE","EOOEOE");
+
+				$code = $_GET['code'];
+
+				$numberSystem = $code[0];
+				$codelength = strlen($code);
+				if ($numberSYstem == '0') {
+					$parity = $paritySystem[$code[7]];
+				}else{
+					$parity = strrev($paritySystem[$code[7]]);
+				}
+
+				$checksum = 0;
+				$codeString = $upcE_lines[$upcE_values['START']];
+				for ($i=0; $i < 6; $i++) {
+						$codeString = $codeString . $upcE_lines[$upcE_values[$parity[$i] . "_" . $code[$i+1]]];
+				}
+
+				$codeString = $codeString . $upcE_lines[$upcE_values['END']];
 				$width = (strlen($codeString)) + 22;
 				$height = 75;
 				$image = imagecreate($width, $height);
